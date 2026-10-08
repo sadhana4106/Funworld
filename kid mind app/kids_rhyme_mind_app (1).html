@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌈 Fun World - Toddler Play & Learn Console 🎈</title>
+    <!-- Tailwind CSS for modern responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for kids-friendly icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for whimsical typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #FFF3F6; /* Creamy Strawberry Pastel */
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+        .bubbly-border {
+            border: 6px solid #FFD1DC;
+            box-shadow: 0 12px 24px rgba(255, 105, 180, 0.12);
+        }
+        /* Toddler friendly animations */
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .bounce-animation {
+            animation: gentle-bounce 2s infinite ease-in-out;
+        }
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spin-slow {
+            animation: rotate-slow 15s infinite linear;
+        }
+        @keyframes pulse-fast {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .music-playing {
+            animation: pulse-fast 0.8s infinite ease-in-out;
+        }
+        /* Active touch styling */
+        .tap-bubble {
+            transition: transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tap-bubble:active {
+            transform: scale(0.92);
+        }
+        /* Custom balloon float styling */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            animation: floatUp 4s linear forwards;
+            cursor: pointer;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0.9; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-16">
+
+    <!-- Header / Banner -->
+    <header class="bg-gradient-to-r from-pink-400 via-orange-300 via-yellow-300 via-green-300 to-sky-400 p-5 text-white text-center shadow-md relative overflow-hidden">
+        <div class="absolute -left-6 -top-6 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
+        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-white/20 rounded-full blur-lg"></div>
+        <div class="relative z-10 flex flex-col items-center justify-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-wider drop-shadow-md bounce-animation flex items-center gap-3">
+                🎈 Fun World 🧸
+            </h1>
+            <p class="text-sm md:text-base font-medium mt-1 drop-shadow text-pink-50">The Magical Singing, Learning, & Mind Play Kingdom!</p>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto px-4 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN: Rhythmic Jukebox & TV Stage (7 Columns) -->
+        <main class="lg:col-span-7 space-y-6">
+            
+            <!-- Magical Rhyme Selection & Jukebox -->
+            <section class="bg-white rounded-3xl p-6 bubbly-border relative">
+                
+                <!-- Live Playlist Tabs (Scrollable Grid) -->
+                <h2 class="text-2xl font-extrabold text-pink-500 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-music text-yellow-400"></i> Tap a Favorite Song!
+                </h2>
+                <div class="max-h-52 overflow-y-auto pr-2 mb-4 border-2 border-pink-100 p-2 rounded-2xl bg-pink-50/50">
+                    <div id="rhyme-selectors" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- Jukebox & Stage Toggle Screen -->
+                <div class="bg-sky-50 rounded-3xl p-5 border-4 border-dashed border-sky-200 text-center relative overflow-hidden">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 id="rhyme-title" class="text-xl md:text-2xl font-extrabold text-sky-600">Twinkle Twinkle Little Star</h3>
+                        <!-- Mode Toggler (Lyrics vs Animated Video TV) -->
+                        <div class="flex gap-2">
+                            <button onclick="switchStageMode('lyrics')" id="btn-mode-lyrics" class="px-3 py-1 rounded-full text-xs font-bold bg-sky-500 text-white shadow-sm">📖 Words</button>
+                            <button onclick="switchStageMode('video')" id="btn-mode-video" class="px-3 py-1 rounded-full text-xs font-bold bg-white text-sky-600 border border-sky-300">📺 Watch TV</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mega Giant Interactive Controls -->
+                    <div class="flex justify-center gap-4 mb-4">
+                        <button id="btn-play-music" onclick="playRhymeWithSinging()" class="tap-bubble bg-pink-500 hover:bg-pink-600 text-white font-black py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-3 text-xl">
+                            <i id="voice-icon" class="fa-solid fa-circle-play text-2xl"></i> 
+                            <span id="voice-btn-text">SING SONG 🎶</span>
+                        </button>
+                        <button onclick="stopRhymeAndMusic()" class="tap-bubble bg-slate-400 hover:bg-slate-500 text-white font-bold p-4 rounded-full shadow-md">
+                            <i class="fa-solid fa-circle-stop text-xl"></i>
+                        </button>
+                    </div>
+
+                    <!-- Stage Area: LYRIC MODE -->
+                    <div id="stage-lyrics" class="bg-white rounded-2xl p-5 border-2 border-sky-100 shadow-inner">
+                        <p id="rhyme-lyrics" class="text-xl md:text-2xl text-slate-700 leading-relaxed font-bold whitespace-pre-line text-center">
+                            Loading...
+                        </p>
+                    </div>
+
+                    <!-- Stage Area: CARTOON VIDEO TV MODE (Canvas Theatre with Animated Dancers) -->
+                    <div id="stage-video" class="hidden relative">
+                        <div class="bg-slate-900 rounded-2xl overflow-hidden border-8 border-yellow-400 relative">
+                            <!-- Canvas for Live Dancing Animation Synchronized to Frequencies -->
+                            <canvas id="tv-canvas" width="480" height="260" class="w-full h-auto block bg-gradient-to-b from-sky-300 to-indigo-500"></canvas>
+                            <!-- Screen Glare Overlay -->
+                            <div class="absolute inset-0 pointer-events-none bg-gradient-to-tr from-transparent via-white/5 to-white/10"></div>
+                        </div>
+                        <p class="text-xs text-sky-600 font-bold mt-1"><i class="fa-solid fa-sparkles animate-pulse"></i> Bouncing Cartoon Show! Dances in sync with our live music notes!</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Learning Suite: Numbers 1 to 10 with Balloon Spawning -->
+            <section class="bg-white rounded-3xl p-6 bubbly-border relative overflow-hidden">
+                <h2 class="text-2xl font-extrabold text-emerald-500 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-up-1-9 text-yellow-400"></i> Tap & Count: Numbers 1 to 10!
+                </h2>
+                <p class="text-sm text-slate-500 mb-4 font-bold">Tap a number! Watch it spawn that exact count of balloons to pop!</p>
+                
+                <div class="grid grid-cols-5 gap-2" id="numbers-grid">
+                    <!-- Numbers 1 to 10 rendered here -->
+                </div>
+
+                <!-- Floating Balloons Container Area -->
+                <div id="balloon-container" class="absolute inset-0 pointer-events-none z-30"></div>
+            </section>
+
+        </main>
+
+        <!-- RIGHT COLUMN: Mind Game Slides & Soundboard (5 Columns) -->
+        <aside class="lg:col-span-5 space-y-6">
+            
+            <!-- Mind Game Slide Deck (8 Progressive Slides) -->
+            <section class="bg-white rounded-3xl p-6 bubbly-border relative">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-2xl font-extrabold text-purple-600 flex items-center gap-2">
+                        <i class="fa-solid fa-puzzle-piece text-yellow-400"></i> Toddler Mind Games
+                    </h2>
+                    <!-- Slide Indicator Badge -->
+                    <span id="slide-badge" class="bg-purple-100 text-purple-700 font-black px-3 py-1 rounded-full text-xs">Level 1/8</span>
+                </div>
+
+                <!-- Slide Progression Bar -->
+                <div class="w-full bg-slate-100 h-3 rounded-full mb-4 overflow-hidden flex">
+                    <div id="slide-progress" class="bg-gradient-to-r from-purple-400 to-pink-500 h-full transition-all duration-300" style="width: 12.5%;"></div>
+                </div>
+
+                <!-- Interactive Game Stage (Inner Container) -->
+                <div id="game-slide-viewport" class="bg-purple-50 rounded-2xl p-4 border-4 border-dashed border-purple-200 min-h-[220px] flex flex-col justify-center items-center text-center">
+                    <!-- Slides loaded dynamically -->
+                </div>
+
+                <!-- Navigation Controls for Toddler Slider -->
+                <div class="flex justify-between items-center mt-4">
+                    <button onclick="prevSlide()" class="tap-bubble bg-purple-200 hover:bg-purple-300 text-purple-700 font-extrabold py-2 px-4 rounded-full text-sm">
+                        ◀ Back
+                    </button>
+                    <span class="text-xs text-slate-400 font-bold">Simple tap games!</span>
+                    <button onclick="nextSlide()" class="tap-bubble bg-purple-500 hover:bg-purple-600 text-white font-extrabold py-2 px-4 rounded-full text-sm">
+                        Next ▶
+                    </button>
+                </div>
+            </section>
+
+            <!-- Toddler Animal Soundboard with Giant Buttons -->
+            <section class="bg-white rounded-3xl p-6 bubbly-border">
+                <h2 class="text-2xl font-extrabold text-orange-500 mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-paw text-yellow-400"></i> Touch Animal Sounds!
+                </h2>
+                <p class="text-slate-500 mb-4 text-xs font-semibold">Touch to make them sing and talk!</p>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <button onclick="playAnimal('cow', 'Moo! 🐮', 110)" class="tap-bubble bg-amber-100 hover:bg-amber-200 p-4 rounded-2xl border-2 border-amber-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1 bounce-animation">🐮</div>
+                        <div class="font-extrabold text-amber-800 text-xs">COW</div>
+                    </button>
+                    <button onclick="playAnimal('duck', 'Quack! 🦆', 320)" class="tap-bubble bg-yellow-100 hover:bg-yellow-200 p-4 rounded-2xl border-2 border-yellow-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1">🦆</div>
+                        <div class="font-extrabold text-yellow-800 text-xs">DUCK</div>
+                    </button>
+                    <button onclick="playAnimal('frog', 'Ribbit! 🐸', 180)" class="tap-bubble bg-green-100 hover:bg-green-200 p-4 rounded-2xl border-2 border-green-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1">🐸</div>
+                        <div class="font-extrabold text-green-800 text-xs">FROG</div>
+                    </button>
+                    <button onclick="playAnimal('cat', 'Meow! 🐱', 620)" class="tap-bubble bg-rose-100 hover:bg-rose-200 p-4 rounded-2xl border-2 border-rose-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1">🐱</div>
+                        <div class="font-extrabold text-rose-800 text-xs">CAT</div>
+                    </button>
+                    <button onclick="playAnimal('dog', 'Woof! 🐶', 220)" class="tap-bubble bg-sky-100 hover:bg-sky-200 p-4 rounded-2xl border-2 border-sky-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1 bounce-animation">🐶</div>
+                        <div class="font-extrabold text-sky-800 text-xs">DOG</div>
+                    </button>
+                    <button onclick="playAnimal('sheep', 'Baa! 🐑', 280)" class="tap-bubble bg-purple-100 hover:bg-purple-200 p-4 rounded-2xl border-2 border-purple-300 text-center shadow-sm">
+                        <div class="text-4xl mb-1">🐑</div>
+                        <div class="font-extrabold text-purple-800 text-xs">SHEEP</div>
+                    </button>
+                </div>
+            </section>
+
+        </aside>
+
+    </div>
+
+    <!-- Celebration Popup -->
+    <div id="win-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-3xl p-8 max-w-xs text-center mx-4 border-8 border-yellow-300 shadow-2xl relative">
+            <div class="text-7xl mb-4 bounce-animation">🏆</div>
+            <h3 class="text-3xl font-black text-pink-500 mb-2">YAY! You Won!</h3>
+            <p class="text-slate-600 mb-6 font-bold text-lg">You are a superstar at Fun World! 🌟</p>
+            <button onclick="closeWinModal()" class="tap-bubble bg-pink-500 hover:bg-pink-600 text-white font-black py-3 px-8 rounded-full text-lg shadow-md w-full">
+                PLAY AGAIN!
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden Parent Configuration panel at absolute bottom -->
+    <footer class="mt-16 border-t border-slate-200 pt-8 text-center">
+        <button onclick="toggleParentPanel()" class="bg-slate-200 text-slate-600 font-bold px-4 py-2 rounded-full text-xs">
+            ⚙️ Parent Configuration Dashboard
+        </button>
+        
+        <div id="parent-panel" class="max-w-xl mx-auto mt-4 p-6 bg-white rounded-2xl border border-slate-300 text-left hidden">
+            <h3 class="font-bold text-slate-800 mb-2 text-sm">Save/Edit Base Songs</h3>
+            <div class="space-y-2">
+                <select id="parent-rhyme-select" onchange="loadParentEditor()" class="w-full p-2 border rounded-lg text-sm">
+                    <!-- Dynamic -->
+                </select>
+                <input type="text" id="parent-title-input" class="w-full p-2 border rounded-lg text-sm">
+                <textarea id="parent-lyrics-input" rows="4" class="w-full p-2 border rounded-lg text-sm font-mono"></textarea>
+                <button onclick="saveParentLyrics()" class="bg-rose-500 text-white font-bold py-2 px-4 rounded-lg text-sm">
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Rhymes State Database (Now featuring 12 complete nursery rhymes!)
+        let rhymes = [
+            {
+                id: "twinkle",
+                title: "🌟 Twinkle Star",
+                color: "bg-amber-400 hover:bg-amber-500 text-white",
+                lyrics: "Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky!",
+                melody: [
+                    ["C4", 0.5], ["C4", 0.5], ["G4", 0.5], ["G4", 0.5], ["A4", 0.5], ["A4", 0.5], ["G4", 1.0],
+                    ["F4", 0.5], ["F4", 0.5], ["E4", 0.5], ["E4", 0.5], ["D4", 0.5], ["D4", 0.5], ["C4", 1.0]
+                ]
+            },
+            {
+                id: "spider",
+                title: "🕷️ Itsy Spider",
+                color: "bg-sky-400 hover:bg-sky-500 text-white",
+                lyrics: "The itsy bitsy spider\nclimbed up the waterspout.\nDown came the rain\nand washed the spider out!",
+                melody: [
+                    ["G4", 0.3], ["C5", 0.3], ["C5", 0.3], ["C5", 0.3], ["D5", 0.3], ["E5", 0.3], ["E5", 0.6],
+                    ["D5", 0.3], ["C5", 0.3], ["D5", 0.3], ["E5", 0.3], ["C5", 0.6]
+                ]
+            },
+            {
+                id: "humpty",
+                title: "🥚 Humpty",
+                color: "bg-rose-400 hover:bg-rose-500 text-white",
+                lyrics: "Humpty Dumpty sat on a wall,\nHumpty Dumpty had a great fall.\nAll the king's horses,\nAnd all the king's men!",
+                melody: [
+                    ["G4", 0.5], ["E4", 0.5], ["E4", 0.5], ["F4", 0.5], ["G4", 0.5], ["E4", 0.5], ["E4", 0.5],
+                    ["A4", 0.5], ["A4", 0.5], ["G4", 0.5], ["F4", 0.5], ["G4", 1.0]
+                ]
+            },
+            {
+                id: "sheep",
+                title: "🐑 Black Sheep",
+                color: "bg-green-400 hover:bg-green-500 text-white",
+                lyrics: "Baa, baa, black sheep,\nhave you any wool?\nYes sir, yes sir,\nthree bags full!",
+                melody: [
+                    ["C4", 0.5], ["C4", 0.5], ["G4", 0.5], ["G4", 0.5], ["A4", 0.3], ["B4", 0.3], ["C5", 0.3], ["A4", 0.3], ["G4", 1.0],
+                    ["F4", 0.5], ["F4", 0.5], ["E4", 0.5], ["E4", 0.5], ["D4", 0.5], ["D4", 0.5], ["C4", 1.0]
+                ]
+            },
+            {
+                id: "abc",
+                title: "🔤 ABC Song",
+                color: "bg-purple-400 hover:bg-purple-500 text-white",
+                lyrics: "A-B-C-D-E-F-G,\nH-I-J-K-L-M-N-O-P,\nQ-R-S, T-U-V,\nW-X, Y and Z!",
+                melody: [
+                    ["C4", 0.5], ["C4", 0.5], ["G4", 0.5], ["G4", 0.5], ["A4", 0.5], ["A4", 0.5], ["G4", 1.0],
+                    ["F4", 0.5], ["F4", 0.5], ["E4", 0.5], ["E4", 0.5], ["D4", 0.5], ["D4", 0.5], ["C4", 1.0]
+                ]
+            },
+            {
+                id: "bus",
+                title: "🚌 Wheels on Bus",
+                color: "bg-teal-400 hover:bg-teal-500 text-white",
+                lyrics: "The wheels on the bus go\nround and round,\nround and round,\nround and round!",
+                melody: [
+                    ["C4", 0.3], ["F4", 0.3], ["F4", 0.3], ["F4", 0.3], ["A4", 0.3], ["C5", 0.6], ["A4", 0.3], ["F4", 0.6],
+                    ["G4", 0.3], ["E4", 0.3], ["C4", 0.6], ["F4", 0.6]
+                ]
+            },
+            {
+                id: "macdonald",
+                title: "🚜 Old MacDonald",
+                color: "bg-orange-400 hover:bg-orange-500 text-white",
+                lyrics: "Old MacDonald had a farm,\nE-I-E-I-O!\nAnd on his farm he had a cow,\nE-I-E-I-O!",
+                melody: [
+                    ["G4", 0.5], ["G4", 0.5], ["G4", 0.5], ["D4", 0.5], ["E4", 0.5], ["E4", 0.5], ["D4", 1.0],
+                    ["B4", 0.5], ["B4", 0.5], ["A4", 0.5], ["A4", 0.5], ["G4", 1.0]
+                ]
+            },
+            {
+                id: "boat",
+                title: "🚣 Row Your Boat",
+                color: "bg-indigo-400 hover:bg-indigo-500 text-white",
+                lyrics: "Row, row, row your boat,\nGently down the stream!\nMerrily, merrily, merrily, merrily,\nLife is but a dream!",
+                melody: [
+                    ["C4", 0.6], ["C4", 0.6], ["C4", 0.4], ["D4", 0.2], ["E4", 0.6], ["E4", 0.4], ["D4", 0.2], ["E4", 0.4], ["F4", 0.2], ["G4", 1.2],
+                    ["C5", 0.2], ["C5", 0.2], ["G4", 0.2], ["G4", 0.2], ["E4", 0.2], ["E4", 0.2], ["C4", 0.2], ["G4", 0.4], ["F4", 0.2], ["E4", 0.4], ["D4", 0.2], ["C4", 1.2]
+                ]
+            },
+            {
+                id: "hickory",
+                title: "⏰ Hickory Clock",
+                color: "bg-red-400 hover:bg-red-500 text-white",
+                lyrics: "Hickory, dickory, dock,\nThe mouse ran up the clock.\nThe clock struck one,\nThe mouse ran down!",
+                melody: [
+                    ["G4", 0.5], ["A4", 0.5], ["G4", 0.5], ["C5", 0.5], ["G4", 1.0],
+                    ["F4", 0.5], ["E4", 0.5], ["D4", 0.5], ["C4", 1.0]
+                ]
+            },
+            {
+                id: "jackjill",
+                title: "👦 Jack & Jill",
+                color: "bg-pink-400 hover:bg-pink-500 text-white",
+                lyrics: "Jack and Jill went up the hill,\nTo fetch a pail of water.\nJack fell down and broke his crown,\nAnd Jill came tumbling after!",
+                melody: [
+                    ["C4", 0.5], ["D4", 0.5], ["E4", 0.5], ["F4", 0.5], ["G4", 1.0],
+                    ["A4", 0.5], ["G4", 0.5], ["F4", 0.5], ["E4", 1.0]
+                ]
+            },
+            {
+                id: "london",
+                title: "🌉 London Bridge",
+                color: "bg-emerald-400 hover:bg-emerald-500 text-white",
+                lyrics: "London Bridge is falling down,\nFalling down, falling down.\nLondon Bridge is falling down,\nMy fair lady!",
+                melody: [
+                    ["G4", 0.5], ["A4", 0.5], ["G4", 0.5], ["F4", 0.5], ["E4", 0.5], ["F4", 0.5], ["G4", 1.0],
+                    ["D4", 0.5], ["E4", 0.5], ["F4", 1.0], ["E4", 0.5], ["F4", 0.5], ["G4", 1.0]
+                ]
+            },
+            {
+                id: "jingle",
+                title: "🔔 Jingle Bells",
+                color: "bg-violet-400 hover:bg-violet-500 text-white",
+                lyrics: "Dashing through the snow,\nIn a one-horse open sleigh,\nO'er the fields we go,\nLaughing all the way!",
+                melody: [
+                    ["E4", 0.5], ["E4", 0.5], ["E4", 1.0], ["E4", 0.5], ["E4", 0.5], ["E4", 1.0],
+                    ["E4", 0.5], ["G4", 0.5], ["C4", 0.5], ["D4", 0.5], ["E4", 2.0]
+                ]
+            }
+        ];
+
+        let activeRhymeIndex = 0;
+
+        // Interactive Slidemind Games (8 Progressive Levels)
+        let activeSlideIndex = 0;
+        const totalSlides = 8;
+
+        // Audio System
+        let audioCtx = null;
+        let melodyInterval = null;
+        let speechSynth = window.speechSynthesis;
+        let speechUtterance = null;
+
+        // TV Animated Canvas variables
+        let tvCanvas = null;
+        let tvCtx = null;
+        let animationFrameId = null;
+        let tvMode = "lyrics"; // 'lyrics' or 'video'
+        let currentVisualColor = "#F472B6";
+        let danceTempo = 0;
+
+        window.onload = function() {
+            renderRhymeSelectors();
+            loadRhyme(0);
+            renderNumbers();
+            loadSlide(0);
+            populateParentPanel();
+
+            // Set up TV canvas
+            tvCanvas = document.getElementById("tv-canvas");
+            tvCtx = tvCanvas.getContext("2d");
+            startVisualizerLoop();
+        };
+
+        // --- JUKEBOX CONTROLLER ---
+        function renderRhymeSelectors() {
+            const container = document.getElementById("rhyme-selectors");
+            container.innerHTML = "";
+            rhymes.forEach((rhyme, index) => {
+                const btn = document.createElement("button");
+                btn.className = `tap-bubble py-3 px-2 rounded-2xl font-black text-xs md:text-sm transition shadow-sm border-4 ${
+                    index === activeRhymeIndex 
+                    ? "border-yellow-300 scale-105 ring-4 ring-pink-200" 
+                    : "border-transparent"
+                } ${rhyme.color}`;
+                btn.innerText = rhyme.title;
+                btn.onclick = () => loadRhyme(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function loadRhyme(index) {
+            stopRhymeAndMusic();
+            activeRhymeIndex = index;
+            renderRhymeSelectors();
+            
+            const rhyme = rhymes[index];
+            document.getElementById("rhyme-title").innerText = rhyme.title;
+            document.getElementById("rhyme-lyrics").innerText = rhyme.lyrics;
+
+            // Randomize TV visualizer color
+            const colors = ["#F472B6", "#60A5FA", "#34D399", "#FBBF24", "#A78BFA", "#F87171"];
+            currentVisualColor = colors[index % colors.length];
+        }
+
+        // --- INTERACTIVE CARTOON TV VIDEO MODE VISUALIZER ---
+        function switchStageMode(mode) {
+            tvMode = mode;
+            if (mode === "lyrics") {
+                document.getElementById("stage-lyrics").classList.remove("hidden");
+                document.getElementById("stage-video").classList.add("hidden");
+                document.getElementById("btn-mode-lyrics").className = "px-3 py-1 rounded-full text-xs font-bold bg-sky-500 text-white shadow-sm";
+                document.getElementById("btn-mode-video").className = "px-3 py-1 rounded-full text-xs font-bold bg-white text-sky-600 border border-sky-300";
+            } else {
+                document.getElementById("stage-lyrics").classList.add("hidden");
+                document.getElementById("stage-video").classList.remove("hidden");
+                document.getElementById("btn-mode-lyrics").className = "px-3 py-1 rounded-full text-xs font-bold bg-white text-sky-600 border border-sky-300";
+                document.getElementById("btn-mode-video").className = "px-3 py-1 rounded-full text-xs font-bold bg-sky-500 text-white shadow-sm";
+            }
+        }
+
+        function startVisualizerLoop() {
+            function draw() {
+                if (!tvCtx) return;
+                
+                // Clear Canvas
+                tvCtx.clearRect(0, 0, tvCanvas.width, tvCanvas.height);
+
+                // Sky & Sun
+                let skyGrad = tvCtx.createLinearGradient(0, 0, 0, tvCanvas.height);
+                skyGrad.addColorStop(0, "#bae6fd");
+                skyGrad.addColorStop(1, "#fef08a");
+                tvCtx.fillStyle = skyGrad;
+                tvCtx.fillRect(0, 0, tvCanvas.width, tvCanvas.height);
+
+                // Bouncing animated Sun
+                let sunBounce = Math.sin(Date.now() * 0.003) * 8;
+                tvCtx.beginPath();
+                tvCtx.arc(380, 50 + sunBounce, 25, 0, Math.PI * 2);
+                tvCtx.fillStyle = "#f59e0b";
+                tvCtx.fill();
+
+                // Rolling green hills
+                tvCtx.fillStyle = "#86efac";
+                tvCtx.beginPath();
+                tvCtx.ellipse(120, 270, 260, 100, 0, 0, Math.PI * 2);
+                tvCtx.fill();
+
+                tvCtx.fillStyle = "#4ade80";
+                tvCtx.beginPath();
+                tvCtx.ellipse(360, 280, 240, 120, 0, 0, Math.PI * 2);
+                tvCtx.fill();
+
+                // Rhythmic bouncing/tempo multiplier based on playing active note state
+                let danceY = 0;
+                let scaleW = 1;
+                let rotateAngle = 0;
+                
+                if (danceTempo > 0) {
+                    danceY = Math.sin(Date.now() * 0.015) * 20;
+                    scaleW = 1 + Math.sin(Date.now() * 0.015) * 0.08;
+                    rotateAngle = Math.sin(Date.now() * 0.01) * 0.15;
+                    danceTempo -= 0.02;
+                } else {
+                    danceY = Math.sin(Date.now() * 0.002) * 4;
+                    rotateAngle = Math.sin(Date.now() * 0.001) * 0.05;
+                }
+
+                // --- UNIQUE CANVAS SCENERY MATCHED TO THE LYRICS ---
+                const currentId = rhymes[activeRhymeIndex].id;
+
+                if (currentId === "twinkle") {
+                    // Draw Twinkling Stars inside the Sky
+                    tvCtx.fillStyle = "#fef08a";
+                    let starPulse = Math.abs(Math.sin(Date.now() * 0.01));
+                    for (let x of [50, 130, 200, 300, 420]) {
+                        tvCtx.beginPath();
+                        tvCtx.arc(x, 40 + (x % 30), 4 + (starPulse * 6), 0, Math.PI * 2);
+                        tvCtx.fill();
+                    }
+                } 
+                else if (currentId === "spider") {
+                    // Draw a brown waterspout on the side
+                    tvCtx.fillStyle = "#a8a29e";
+                    tvCtx.fillRect(60, 20, 30, 240);
+
+                    // Draw blue rain drop lines sliding down if music is singing
+                    if (danceTempo > 0) {
+                        tvCtx.strokeStyle = "#38bdf8";
+                        tvCtx.lineWidth = 3;
+                        let rainOffset = (Date.now() % 500) / 2;
+                        for (let rx of [50, 150, 280, 350, 430]) {
+                            tvCtx.beginPath();
+                            tvCtx.moveTo(rx, rainOffset);
+                            tvCtx.lineTo(rx, rainOffset + 25);
+                            tvCtx.stroke();
+                        }
+                    }
+                } 
+                else if (currentId === "humpty") {
+                    // Draw a red brick wall at the bottom
+                    tvCtx.fillStyle = "#f87171";
+                    tvCtx.fillRect(120, 200, 240, 60);
+                    tvCtx.strokeStyle = "#ffffff";
+                    tvCtx.lineWidth = 2;
+                    tvCtx.strokeRect(120, 200, 240, 60);
+                } 
+                else if (currentId === "bus") {
+                    // Draw bus wheels bouncing along bottom
+                    tvCtx.fillStyle = "#4b5563";
+                    tvCtx.beginPath();
+                    tvCtx.arc(140, 240, 18, 0, Math.PI * 2);
+                    tvCtx.arc(340, 240, 18, 0, Math.PI * 2);
+                    tvCtx.fill();
+                }
+
+                // Draw Dancing Cartoon Animal / Shape (Sparky)
+                tvCtx.save();
+                tvCtx.translate(240, 160 + danceY);
+                tvCtx.scale(scaleW, 1);
+                tvCtx.rotate(rotateAngle);
+
+                // Body of Sparky (Friendly monster blob)
+                tvCtx.beginPath();
+                tvCtx.arc(0, 0, 45, 0, Math.PI * 2);
+                tvCtx.fillStyle = currentVisualColor;
+                tvCtx.fill();
+                tvCtx.lineWidth = 4;
+                tvCtx.strokeStyle = "#ffffff";
+                tvCtx.stroke();
+
+                // Huge Friendly Eyes
+                tvCtx.fillStyle = "#ffffff";
+                tvCtx.beginPath();
+                tvCtx.arc(-15, -10, 12, 0, Math.PI * 2);
+                tvCtx.arc(15, -10, 12, 0, Math.PI * 2);
+                tvCtx.fill();
+
+                // Pupils looking happy
+                tvCtx.fillStyle = "#000000";
+                tvCtx.beginPath();
+                tvCtx.arc(-15, -10, 5, 0, Math.PI * 2);
+                tvCtx.arc(15, -10, 5, 0, Math.PI * 2);
+                tvCtx.fill();
+
+                // Cheek blush
+                tvCtx.fillStyle = "#ff8a9a";
+                tvCtx.beginPath();
+                tvCtx.arc(-22, 5, 6, 0, Math.PI * 2);
+                tvCtx.arc(22, 5, 6, 0, Math.PI * 2);
+                tvCtx.fill();
+
+                // Mega Joyful smile
+                tvCtx.beginPath();
+                tvCtx.arc(0, 5, 15, 0, Math.PI);
+                tvCtx.lineWidth = 4;
+                tvCtx.strokeStyle = "#000000";
+                tvCtx.stroke();
+
+                // Cute Gold Star crown on the dancer
+                tvCtx.fillStyle = "#FBBF24";
+                tvCtx.beginPath();
+                tvCtx.moveTo(0, -75);
+                tvCtx.lineTo(8, -58);
+                tvCtx.lineTo(25, -58);
+                tvCtx.lineTo(12, -48);
+                tvCtx.lineTo(18, -30);
+                tvCtx.lineTo(0, -42);
+                tvCtx.lineTo(-18, -30);
+                tvCtx.lineTo(-12, -48);
+                tvCtx.lineTo(-25, -58);
+                tvCtx.lineTo(-8, -58);
+                tvCtx.closePath();
+                tvCtx.fill();
+
+                tvCtx.restore();
+
+                // Draw Musical Notes Floating Upward
+                if (danceTempo > 0.5) {
+                    tvCtx.fillStyle = "#ec4899";
+                    tvCtx.font = "24px Arial";
+                    tvCtx.fillText("🎵", 120 + (Math.sin(Date.now()*0.005) * 30), 100 + danceY);
+                    tvCtx.fillText("🎶", 320 + (Math.cos(Date.now()*0.005) * 30), 80 - danceY);
+                }
+
+                animationFrameId = requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // --- SYNTHESIZER SINGING + RHYTHM ENGINE ---
+        function playRhymeWithSinging() {
+            stopRhymeAndMusic();
+
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const rhyme = rhymes[activeRhymeIndex];
+            const melody = rhyme.melody;
+            let noteIndex = 0;
+
+            document.getElementById("btn-play-music").className += " music-playing bg-yellow-300 text-pink-700 border-4 border-pink-500";
+            document.getElementById("voice-icon").className = "fa-solid fa-compact-disc animate-spin text-2xl";
+            document.getElementById("voice-btn-text").innerText = "SINGING... 🎶";
+
+            const notesMap = {
+                "C4": 261.63, "D4": 293.66, "E4": 329.63, "F4": 349.23, "G4": 392.00, "A4": 440.00, "B4": 493.88,
+                "C5": 523.25, "D5": 587.33, "E5": 659.25, "F5": 698.46, "G5": 783.99
+            };
+
+            // Singing helper: modulate Speech Pitch dynamically alongside notes
+            function playNextNote() {
+                if (noteIndex >= melody.length) {
+                    noteIndex = 0; // Infinite loop of pleasant melody
+                }
+
+                const currentNote = melody[noteIndex];
+                const freq = notesMap[currentNote[0]] || 261.63;
+                const duration = currentNote[1] * 0.9;
+
+                // Sync TV stage visual tempo
+                danceTempo = 1.0;
+
+                // Play bell/synth note
+                let osc = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+
+                osc.type = "triangle"; // Smooth sweet toddler-safe wave
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                // Add tiny pitch vibrato to make it sound cute & organic
+                let vibrato = audioCtx.createOscillator();
+                let vibratoGain = audioCtx.createGain();
+                vibrato.frequency.value = 8; // speed of vibrato
+                vibratoGain.gain.value = 5; // depth of vibrato
+                vibrato.connect(vibratoGain);
+                vibratoGain.connect(osc.frequency);
+                vibrato.start();
+
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+
+                noteIndex++;
+                melodyInterval = setTimeout(playNextNote, currentNote[1] * 1000);
+            }
+
+            playNextNote();
+
+            // Run Rhythmic Toddler voice narrator
+            speechUtterance = new SpeechSynthesisUtterance(rhyme.lyrics);
+            speechUtterance.rate = 0.75; // Slower rhythmic speed
+            speechUtterance.pitch = 1.45; // Sweet cartoonish pitch
+            speechSynth.speak(speechUtterance);
+
+            speechUtterance.onend = () => {
+                document.getElementById("voice-btn-text").innerText = "Looping Beat 🎵";
+            };
+        }
+
+        function stopRhymeAndMusic() {
+            if (melodyInterval) {
+                clearTimeout(melodyInterval);
+                melodyInterval = null;
+            }
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+
+            // Clean up play button styling
+            const playBtn = document.getElementById("btn-play-music");
+            playBtn.className = "tap-bubble bg-pink-500 hover:bg-pink-600 text-white font-black py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-3 text-xl";
+            document.getElementById("voice-icon").className = "fa-solid fa-circle-play text-2xl";
+            document.getElementById("voice-btn-text").innerText = "SING SONG 🎶";
+            danceTempo = 0;
+        }
+
+        // --- NUMBERS LEARNING INTERACTIVE SUITE (1 TO 10) ---
+        function renderNumbers() {
+            const grid = document.getElementById("numbers-grid");
+            grid.innerHTML = "";
+            const numColors = [
+                "bg-red-300 border-red-400 text-red-800",
+                "bg-orange-300 border-orange-400 text-orange-800",
+                "bg-yellow-300 border-yellow-400 text-yellow-800",
+                "bg-green-300 border-green-400 text-green-800",
+                "bg-teal-300 border-teal-400 text-teal-800",
+                "bg-sky-300 border-sky-400 text-sky-800",
+                "bg-blue-300 border-blue-400 text-blue-800",
+                "bg-indigo-300 border-indigo-400 text-indigo-800",
+                "bg-purple-300 border-purple-400 text-purple-800",
+                "bg-pink-300 border-pink-400 text-pink-800"
+            ];
+
+            for (let i = 1; i <= 10; i++) {
+                const btn = document.createElement("button");
+                btn.className = `tap-bubble h-14 rounded-2xl font-black text-2xl flex items-center justify-center border-4 shadow-md ${numColors[i-1]}`;
+                btn.innerText = i;
+                btn.onclick = () => tapNumber(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function tapNumber(num) {
+            // Speak number
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+            const speech = new SpeechSynthesisUtterance(num.toString());
+            speech.pitch = 1.3;
+            speechSynth.speak(speech);
+
+            // Play musical scale tone matched to number
+            const freqBase = 261.63 + (num * 30);
+            playBeepTone(freqBase, 0.35);
+
+            // Spawn balloons!
+            spawnBalloons(num);
+        }
+
+        function spawnBalloons(count) {
+            const container = document.getElementById("balloon-container");
+            const balloonColors = ["#f87171", "#fb923c", "#facc15", "#4ade80", "#38bdf8", "#c084fc", "#f472b6"];
+
+            for (let i = 0; i < count; i++) {
+                const balloon = document.createElement("div");
+                const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                
+                // Customize styling
+                balloon.className = "balloon flex items-center justify-center";
+                balloon.style.width = "60px";
+                balloon.style.height = "75px";
+                balloon.style.backgroundColor = color;
+                balloon.style.borderRadius = "50% 50% 50% 50% / 40% 40% 60% 60%";
+                balloon.style.left = `${Math.random() * 80 + 10}%`;
+                // Randomized delays to create visual depth
+                balloon.style.animationDelay = `${i * 0.2}s`;
+
+                // Add thread string
+                const string = document.createElement("div");
+                string.style.width = "2px";
+                string.style.height = "30px";
+                string.style.backgroundColor = "#94a3b8";
+                string.style.position = "absolute";
+                string.style.bottom = "-28px";
+                balloon.appendChild(string);
+
+                // Add friendly emoji inside
+                const emoji = document.createElement("span");
+                emoji.innerText = "🎈";
+                emoji.className = "text-xl pointer-events-none";
+                balloon.appendChild(emoji);
+
+                // Make balloon pop-able on tap!
+                balloon.onclick = (e) => {
+                    e.stopPropagation();
+                    // Play pop synthesized pitch
+                    playBeepTone(800 + (Math.random() * 200), 0.1);
+                    // Trigger poof explosion
+                    balloon.style.transform = "scale(1.5)";
+                    balloon.style.opacity = "0";
+                    setTimeout(() => balloon.remove(), 100);
+                };
+
+                container.appendChild(balloon);
+                
+                // Clear out of DOM after animation exits
+                setTimeout(() => balloon.remove(), 5000);
+            }
+        }
+
+        // --- MIND GAME SLIDES SYSTEM (8 Progressive Levels) ---
+        function loadSlide(index) {
+            activeSlideIndex = index;
+            
+            // Adjust badges and progression
+            document.getElementById("slide-badge").innerText = `Level ${index + 1}/${totalSlides}`;
+            const progressPct = ((index + 1) / totalSlides) * 100;
+            document.getElementById("slide-progress").style.width = `${progressPct}%`;
+
+            const stage = document.getElementById("game-slide-viewport");
+            stage.innerHTML = "";
+
+            // Render different toddler-safe slide contents dynamically
+            switch(index) {
+                case 0: // Slide 1: Baby Animal Match
+                    stage.innerHTML = `
+                        <h4 class="font-black text-purple-700 text-xl mb-2">🐱 Baby Animal Match! 🐶</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Find the identical friendly animal pairs!</p>
+                        <div id="deck-grid" class="grid grid-cols-2 gap-3 max-w-[180px] mx-auto"></div>
+                    `;
+                    initBabyDeck();
+                    break;
+                case 1: // Slide 2: Pop the Red Balloon
+                    stage.innerHTML = `
+                        <h4 class="font-black text-red-500 text-xl mb-1">🎈 Color Finder! 🎈</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the red balloon to pop it!</p>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="popBalloonChoice(false)" class="tap-bubble text-5xl bg-white p-3 rounded-full shadow-md">🔵</button>
+                            <button onclick="popBalloonChoice(true)" class="tap-bubble text-5xl bg-white p-3 rounded-full shadow-md border-4 border-yellow-300 animate-bounce">🔴</button>
+                            <button onclick="popBalloonChoice(false)" class="tap-bubble text-5xl bg-white p-3 rounded-full shadow-md">🟡</button>
+                        </div>
+                    `;
+                    break;
+                case 2: // Slide 3: Biggest Star Sizing
+                    stage.innerHTML = `
+                        <h4 class="font-black text-amber-500 text-xl mb-1">⭐ Biggest Star! ⭐</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the biggest star on the screen!</p>
+                        <div class="flex items-center justify-center gap-6">
+                            <button onclick="starChoice(false)" class="tap-bubble text-2xl text-amber-300">⭐</button>
+                            <button onclick="starChoice(true)" class="tap-bubble text-6xl text-amber-400 bounce-animation">⭐</button>
+                            <button onclick="starChoice(false)" class="tap-bubble text-3xl text-amber-300">⭐</button>
+                        </div>
+                    `;
+                    break;
+                case 3: // Slide 4: Tap counting apples
+                    stage.innerHTML = `
+                        <h4 class="font-black text-emerald-600 text-xl mb-1">🍎 Count to 3! 🍎</h4>
+                        <p class="text-xs text-slate-500 mb-3 font-bold">Tap all 3 yummy red apples!</p>
+                        <div id="apple-container" class="flex justify-center gap-4 text-4xl">
+                            <span onclick="tapApple(this)" class="cursor-pointer bg-white p-2 rounded-2xl shadow-md transition">🍎</span>
+                            <span onclick="tapApple(this)" class="cursor-pointer bg-white p-2 rounded-2xl shadow-md transition">🍎</span>
+                            <span onclick="tapApple(this)" class="cursor-pointer bg-white p-2 rounded-2xl shadow-md transition">🍎</span>
+                        </div>
+                    `;
+                    break;
+                case 4: // Slide 5: Match the Colors
+                    stage.innerHTML = `
+                        <h4 class="font-black text-sky-500 text-xl mb-1">🎨 Match Colors! 🎨</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the matching yellow block!</p>
+                        <div class="flex flex-col gap-3 items-center">
+                            <div class="w-12 h-12 bg-yellow-400 rounded-2xl shadow-md"></div>
+                            <div class="flex gap-4">
+                                <button onclick="colorMatchChoice(false)" class="w-10 h-10 bg-blue-400 rounded-xl"></button>
+                                <button onclick="colorMatchChoice(true)" class="w-10 h-10 bg-yellow-400 rounded-xl border-2 border-white animate-pulse"></button>
+                                <button onclick="colorMatchChoice(false)" class="w-10 h-10 bg-green-400 rounded-xl"></button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 5: // Slide 6: Find the Hidden Sun
+                    stage.innerHTML = `
+                        <h4 class="font-black text-orange-500 text-xl mb-1">☀️ Where is the Sun? ☀️</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the cloud to find the hidden sun!</p>
+                        <div class="relative cursor-pointer" onclick="revealSun(this)">
+                            <div id="hidden-sun" class="absolute left-6 top-1 text-5xl transition-all duration-500 opacity-0">☀️</div>
+                            <div class="text-6xl text-slate-300 font-bold relative z-10">☁️</div>
+                        </div>
+                    `;
+                    break;
+                case 6: // Slide 7: Wake the sleeping bear
+                    stage.innerHTML = `
+                        <h4 class="font-black text-amber-700 text-xl mb-1">🐻 Wake up the Bear! 🐻</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the hollow log to wake the sleeping bear!</p>
+                        <div class="relative cursor-pointer flex justify-center" onclick="wakeBear(this)">
+                            <div id="sleeping-bear" class="text-5xl transition-all duration-500 transform scale-100">🪵</div>
+                        </div>
+                    `;
+                    break;
+                case 7: // Slide 8: Match Baby Shapes
+                    stage.innerHTML = `
+                        <h4 class="font-black text-pink-500 text-xl mb-1">💖 Find the Heart Shape! 💖</h4>
+                        <p class="text-xs text-slate-500 mb-4 font-bold">Tap the pretty pink heart!</p>
+                        <div class="flex justify-center gap-4 text-5xl">
+                            <button onclick="shapeMatchChoice(false)" class="tap-bubble bg-white p-3 rounded-2xl shadow-sm">🔺</button>
+                            <button onclick="shapeMatchChoice(true)" class="tap-bubble bg-white p-3 rounded-2xl shadow-sm border-4 border-yellow-300 animate-pulse">💖</button>
+                            <button onclick="shapeMatchChoice(false)" class="tap-bubble bg-white p-3 rounded-2xl shadow-sm">🟩</button>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+
+        // Slide navigation wrappers
+        function nextSlide() {
+            activeSlideIndex = (activeSlideIndex + 1) % totalSlides;
+            loadSlide(activeSlideIndex);
+        }
+
+        function prevSlide() {
+            activeSlideIndex = (activeSlideIndex - 1 + totalSlides) % totalSlides;
+            loadSlide(activeSlideIndex);
+        }
+
+        // Slide logic handlers
+        function initBabyDeck() {
+            const icons = ["🐱", "🐶"];
+            let cards = [...icons, ...icons];
+            
+            // Toddler simplified shuffle
+            cards.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById("deck-grid");
+            let flipped = [];
+            let matchedCount = 0;
+
+            cards.forEach((emoji, index) => {
+                const btn = document.createElement("button");
+                btn.className = "h-14 bg-purple-200 text-purple-700 font-bold text-2xl rounded-2xl flex items-center justify-center tap-bubble border-2 border-white";
+                btn.innerText = "❓";
+                btn.onclick = () => {
+                    if (btn.innerText !== "❓" || flipped.length >= 2) return;
+                    btn.innerText = emoji;
+                    btn.className = "h-14 bg-white text-slate-800 font-bold text-2xl rounded-2xl flex items-center justify-center border-4 border-purple-300";
+                    flipped.push({ element: btn, emoji });
+
+                    playBeepTone(400, 0.1);
+
+                    if (flipped.length === 2) {
+                        if (flipped[0].emoji === flipped[1].emoji) {
+                            matchedCount++;
+                            flipped = [];
+                            playBeepTone(587.33, 0.2); // Success note
+                            if (matchedCount === 2) {
+                                setTimeout(() => {
+                                    speakFeedback("Incredible! You matched the animals!");
+                                    nextSlide();
+                                }, 800);
+                            }
+                        } else {
+                            setTimeout(() => {
+                                flipped[0].element.innerText = "❓";
+                                flipped[0].element.className = "h-14 bg-purple-200 text-purple-700 font-bold text-2xl rounded-2xl flex items-center justify-center tap-bubble border-2 border-white";
+                                flipped[1].element.innerText = "❓";
+                                flipped[1].element.className = "h-14 bg-purple-200 text-purple-700 font-bold text-2xl rounded-2xl flex items-center justify-center tap-bubble border-2 border-white";
+                                flipped = [];
+                            }, 1000);
+                        }
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function popBalloonChoice(isCorrect) {
+            if (isCorrect) {
+                playBeepTone(900, 0.1);
+                speakFeedback("Yay! You popped the red balloon!");
+                nextSlide();
+            } else {
+                playBeepTone(200, 0.15);
+            }
+        }
+
+        function starChoice(isCorrect) {
+            if (isCorrect) {
+                playBeepTone(650, 0.2);
+                speakFeedback("Superstar! That is the biggest star!");
+                nextSlide();
+            } else {
+                playBeepTone(200, 0.15);
+            }
+        }
+
+        let appleTapCount = 0;
+        function tapApple(el) {
+            if (el.style.opacity === "0.3") return;
+            el.style.opacity = "0.3";
+            appleTapCount++;
+            
+            playBeepTone(300 + (appleTapCount * 100), 0.15);
+            speakFeedback(appleTapCount.toString());
+
+            if (appleTapCount === 3) {
+                appleTapCount = 0;
+                setTimeout(() => {
+                    speakFeedback("Wow, 3 delicious apples!");
+                    nextSlide();
+                }, 1000);
+            }
+        }
+
+        function colorMatchChoice(isCorrect) {
+            if (isCorrect) {
+                playBeepTone(580, 0.2);
+                speakFeedback("Match found! Perfect!");
+                nextSlide();
+            } else {
+                playBeepTone(200, 0.15);
+            }
+        }
+
+        function revealSun(el) {
+            const sun = document.getElementById("hidden-sun");
+            sun.className = "absolute left-6 top-1 text-5xl transition-all duration-500 opacity-100 scale-125";
+            playBeepTone(780, 0.35);
+            speakFeedback("Look, you found the bright shining sun!");
+            
+            setTimeout(() => {
+                nextSlide();
+            }, 1200);
+        }
+
+        function wakeBear(el) {
+            const container = document.getElementById("sleeping-bear");
+            container.innerText = "🐻 Hello!";
+            container.className = "text-5xl transition-all duration-300 transform scale-125 bounce-animation";
+            playBeepTone(520, 0.4);
+            speakFeedback("Roar! Hello little friend!");
+
+            setTimeout(() => {
+                nextSlide();
+            }, 1500);
+        }
+
+        function shapeMatchChoice(isCorrect) {
+            if (isCorrect) {
+                playBeepTone(880, 0.25);
+                speakFeedback("You are so smart! Beautiful heart shape!");
+                
+                setTimeout(() => {
+                    document.getElementById("win-modal").classList.remove("hidden");
+                }, 800);
+            } else {
+                playBeepTone(200, 0.15);
+            }
+        }
+
+        function closeWinModal() {
+            document.getElementById("win-modal").classList.add("hidden");
+            loadSlide(0);
+        }
+
+        // --- COMPLEMENTARY WEB AUDIO OSCILLATOR BEEPERS ---
+        function playBeepTone(freq, duration) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                let osc = audioCtx.createOscillator();
+                let gainNode = audioCtx.createGain();
+                
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                // Audio context active guard
+            }
+        }
+
+        function playAnimal(animal, soundText, frequency) {
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+            playBeepTone(frequency, 0.3);
+
+            let utterance = new SpeechSynthesisUtterance(soundText);
+            utterance.pitch = animal === 'cat' ? 1.6 : animal === 'cow' ? 0.6 : 1.1;
+            speechSynth.speak(utterance);
+        }
+
+        function speakFeedback(text) {
+            if (speechSynth.speaking) {
+                speechSynth.cancel();
+            }
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.pitch = 1.35;
+            speechSynth.speak(utterance);
+        }
+
+        // --- PARENT / TEACHER MODIFICATION SYSTEM ---
+        function toggleParentPanel() {
+            document.getElementById("parent-panel").classList.toggle("hidden");
+        }
+
+        function populateParentPanel() {
+            const select = document.getElementById("parent-rhyme-select");
+            select.innerHTML = "";
+            rhymes.forEach((rhyme, index) => {
+                const opt = document.createElement("option");
+                opt.value = index;
+                opt.innerText = rhyme.title;
+                select.appendChild(opt);
+            });
+            loadParentEditor();
+        }
+
+        function loadParentEditor() {
+            const select = document.getElementById("parent-rhyme-select");
+            const index = parseInt(select.value);
+            const target = rhymes[index];
+            document.getElementById("parent-title-input").value = target.title;
+            document.getElementById("parent-lyrics-input").value = target.lyrics;
+        }
+
+        function saveParentLyrics() {
+            const select = document.getElementById("parent-rhyme-select");
+            const index = parseInt(select.value);
+            
+            const newTitle = document.getElementById("parent-title-input").value.trim();
+            const newLyrics = document.getElementById("parent-lyrics-input").value.trim();
+
+            if (!newTitle || !newLyrics) return;
+
+            rhymes[index].title = newTitle;
+            rhymes[index].lyrics = newLyrics;
+
+            renderRhymeSelectors();
+            loadRhyme(index);
+            populateParentPanel();
+            select.value = index;
+            alert("Changes saved successfully!");
+        }
+    </script>
+</body>
+</html>
